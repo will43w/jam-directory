@@ -86,7 +86,7 @@ Stores **exceptions only** (overrides/cancellations).
 - `date` (date)
 - `start_time` (time, nullable)
 - `end_time` (time, nullable)
-- `status` (text: `confirmed` | `cancelled` | `moved`)
+- `status` (text: `created` | `cancelled` | `moved`)
 - `notes` (text)
 - `created_at` (timestamp)
 
@@ -151,9 +151,10 @@ Single page with role-based UI.
 
 #### Admin View (visible to admins only)
 - Edit jam details
-- Edit base schedule
+- Edit base schedule (including "active" status)
 - Manage contacts
 - Manage exceptions (see below)
+- Delete jam
 
 ---
 
