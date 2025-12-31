@@ -31,7 +31,12 @@ export function JamDetail({ jam, onSuggestionClick }: JamDetailProps) {
         <h1 className="text-3xl font-bold text-gray-900 mb-2">{jam.name}</h1>
         <p className="text-xl text-gray-700 mb-1">{jam.venue_name}</p>
         {jam.venue_address && (
-          <p className="text-gray-600">{jam.venue_address}</p>
+          <p className="text-gray-600 mb-2">{jam.venue_address}</p>
+        )}
+        {jam.skill_level && (
+          <p className="text-sm text-gray-500 font-medium">
+            Skill Level: {jam.skill_level}
+          </p>
         )}
       </div>
       

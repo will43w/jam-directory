@@ -35,6 +35,13 @@ export function parseSearchParams(
     filters.tonight = searchParams.tonight === 'true' || searchParams.tonight === '1';
   }
   
+  if (searchParams.skill_level) {
+    const skillLevelValues = typeof searchParams.skill_level === 'string' 
+      ? [searchParams.skill_level] 
+      : searchParams.skill_level;
+    filters.skill_levels = skillLevelValues.filter((level): level is string => typeof level === 'string');
+  }
+  
   return filters;
 }
 
@@ -67,6 +74,12 @@ export function serializeSearchParams(filters: SearchFilters): URLSearchParams {
   
   if (filters.tonight) {
     params.set('tonight', 'true');
+  }
+  
+  if (filters.skill_levels && filters.skill_levels.length > 0) {
+    filters.skill_levels.forEach((skillLevel) => {
+      params.append('skill_level', skillLevel);
+    });
   }
   
   return params;

@@ -84,6 +84,7 @@ export interface SearchFilters {
   days?: number[]; // 0-6 for weekday (OR logic when multiple selected)
   after?: string; // Time format (HH:MM)
   tonight?: boolean;
+  skill_levels?: string[]; // Skill level values (OR logic when multiple selected)
 }
 
 // Form data types

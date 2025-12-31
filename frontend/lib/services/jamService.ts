@@ -30,6 +30,11 @@ export async function getJams(filters?: SearchFilters): Promise<Jam[]> {
     );
   }
 
+  // Apply skill level filter
+  if (filters?.skill_levels && filters.skill_levels.length > 0) {
+    query = query.in('skill_level', filters.skill_levels);
+  }
+
   // Apply day/tonight filters (requires join with jam_schedule)
   // Note: This is a simplified approach. For more complex filtering,
   // you might want to fetch all jams and filter in memory, or use a database function

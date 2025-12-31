@@ -40,3 +40,11 @@ export const INDEX_TO_WEEKDAY: Record<number, string> = {
   6: 'saturday',
 };
 
+export const SKILL_LEVELS = [
+  'All Levels',
+  'Beginner',
+  'Intermediate',
+  'Advanced',
+  'Professional',
+] as const;
+
