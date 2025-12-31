@@ -6,6 +6,7 @@ import { getJams } from '@/lib/services/jamService';
 import { getSchedulesByJamId } from '@/lib/services/scheduleService';
 import { getOccurrencesByJamId } from '@/lib/services/occurrenceService';
 import { parseSearchParams } from '@/lib/utils/urlState';
+import { Jam, JamSchedule, JamOccurrence } from '@/lib/types';
 
 interface SearchPageProps {
   params: Promise<{ city: string }>;
@@ -21,7 +22,7 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
   // Fetch data
   // TODO: Replace with actual Supabase implementation
   // For now, services will throw "Not implemented" errors, so we catch them
-  let jams: any[] = [];
+  let jams: Jam[] = [];
   const schedulesMap = new Map();
   const occurrencesMap = new Map();
 
@@ -51,6 +52,16 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
     jams = [];
   }
 
+  // Convert Maps to plain objects for client component serialization
+  const schedulesObj: Record<string, JamSchedule[]> = {};
+  const occurrencesObj: Record<string, JamOccurrence[]> = {};
+  for (const [jamId, schedules] of schedulesMap.entries()) {
+    schedulesObj[jamId] = schedules;
+  }
+  for (const [jamId, occurrences] of occurrencesMap.entries()) {
+    occurrencesObj[jamId] = occurrences;
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -71,8 +82,8 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
         <Suspense fallback={<div>Loading results...</div>}>
           <ResultsList
             jams={jams}
-            schedulesMap={schedulesMap}
-            occurrencesMap={occurrencesMap}
+            schedulesMap={schedulesObj}
+            occurrencesMap={occurrencesObj}
             filters={{
               tonight: filters.tonight,
               days: filters.days,

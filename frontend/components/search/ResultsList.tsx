@@ -7,8 +7,8 @@ import { isTonight } from '@/lib/utils/dateUtils';
 
 interface ResultsListProps {
   jams: Jam[];
-  schedulesMap: Map<string, JamSchedule[]>;
-  occurrencesMap: Map<string, JamOccurrence[]>;
+  schedulesMap: Map<string, JamSchedule[]> | Record<string, JamSchedule[]>;
+  occurrencesMap: Map<string, JamOccurrence[]> | Record<string, JamOccurrence[]>;
   filters?: {
     tonight?: boolean;
     days?: number[];
@@ -33,8 +33,9 @@ export function ResultsList({
 
   // Compute next upcoming date for each jam
   const jamResults = jams.map((jam) => {
-    const schedules = schedulesMap.get(jam.id) || [];
-    const occurrences = occurrencesMap.get(jam.id) || [];
+    // Handle both Map and plain object formats
+    const schedules = (schedulesMap instanceof Map ? schedulesMap.get(jam.id) : schedulesMap[jam.id]) || [];
+    const occurrences = (occurrencesMap instanceof Map ? occurrencesMap.get(jam.id) : occurrencesMap[jam.id]) || [];
     
     let upcomingDates = computeUpcomingDates(schedules, occurrences, 1);
     

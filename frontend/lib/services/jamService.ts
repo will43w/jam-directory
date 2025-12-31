@@ -16,9 +16,9 @@ export async function getJams(filters?: SearchFilters): Promise<Jam[]> {
     .select('*')
     .order('name');
 
-  // Apply city filter
+  // Apply city filter (case-insensitive)
   if (filters?.city) {
-    query = query.eq('city', filters.city);
+    query = query.ilike('city', filters.city);
   }
 
   // Apply search filter (name, venue_name, or venue_address)
