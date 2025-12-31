@@ -1,12 +1,9 @@
-import { Suspense } from 'react';
-import { SearchBar } from '@/components/search/SearchBar';
-import { FilterPanel } from '@/components/search/FilterPanel';
-import { ResultsList } from '@/components/search/ResultsList';
 import { getJams } from '@/lib/services/jamService';
 import { getSchedulesByJamId } from '@/lib/services/scheduleService';
 import { getOccurrencesByJamId } from '@/lib/services/occurrenceService';
 import { parseSearchParams } from '@/lib/utils/urlState';
 import { Jam, JamSchedule, JamOccurrence } from '@/lib/types';
+import { SearchPageClient } from './SearchPageClient';
 
 interface SearchPageProps {
   params: Promise<{ city: string }>;
@@ -63,36 +60,17 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Jazz Jams in {resolvedParams.city.charAt(0).toUpperCase() + resolvedParams.city.slice(1)}
-          </h1>
-          <p className="text-gray-600">Find and discover jazz jam sessions near you</p>
-        </div>
-
-        <div className="space-y-4 mb-6">
-          <Suspense fallback={<div>Loading search...</div>}>
-            <SearchBar />
-          </Suspense>
-          <FilterPanel />
-        </div>
-
-        <Suspense fallback={<div>Loading results...</div>}>
-          <ResultsList
-            jams={jams}
-            schedulesMap={schedulesObj}
-            occurrencesMap={occurrencesObj}
-            filters={{
-              tonight: filters.tonight,
-              days: filters.days,
-              after: filters.after,
-            }}
-          />
-        </Suspense>
-      </div>
-    </div>
+    <SearchPageClient
+      city={resolvedParams.city}
+      jams={jams}
+      schedulesMap={schedulesObj}
+      occurrencesMap={occurrencesObj}
+      filters={{
+        tonight: filters.tonight,
+        days: filters.days,
+        after: filters.after,
+      }}
+    />
   );
 }
 

@@ -1,25 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import type { SuggestionType, CreateSuggestionData } from '@/lib/types';
+import type { CreateSuggestionData } from '@/lib/types';
 import { submitSuggestion } from '@/lib/services/suggestionService';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 
-interface SuggestionModalProps {
+interface NewJamSuggestionModalProps {
   isOpen: boolean;
   onClose: () => void;
-  jamId: string | null;
+  city?: string;
 }
 
-const suggestionTypes: { value: SuggestionType; label: string }[] = [
-  { value: 'update_info', label: 'Wrong / misleading info' },
-  { value: 'inactive', label: 'Jam inactive' },
-  { value: 'other', label: 'Other' },
-];
-
-export function SuggestionModal({ isOpen, onClose, jamId }: SuggestionModalProps) {
-  const [suggestionType, setSuggestionType] = useState<SuggestionType>('other');
+export function NewJamSuggestionModal({ isOpen, onClose, city }: NewJamSuggestionModalProps) {
   const [message, setMessage] = useState('');
   const [sourceUrl, setSourceUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,8 +26,8 @@ export function SuggestionModal({ isOpen, onClose, jamId }: SuggestionModalProps
 
     try {
       const data: CreateSuggestionData = {
-        jam_id: jamId,
-        suggestion_type: suggestionType,
+        jam_id: null,
+        suggestion_type: 'new_jam',
         message,
         source_url: sourceUrl || null,
       };
@@ -44,7 +37,6 @@ export function SuggestionModal({ isOpen, onClose, jamId }: SuggestionModalProps
       
       // Reset form and close after a moment
       setTimeout(() => {
-        setSuggestionType('other');
         setMessage('');
         setSourceUrl('');
         setSuccess(false);
@@ -58,7 +50,7 @@ export function SuggestionModal({ isOpen, onClose, jamId }: SuggestionModalProps
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Help the community">
+    <Modal isOpen={isOpen} onClose={onClose} title="Let us know about a jam">
       {success ? (
         <div className="text-center py-4">
           <p className="text-green-600 font-medium">Thank you! Your suggestion has been submitted.</p>
@@ -66,29 +58,8 @@ export function SuggestionModal({ isOpen, onClose, jamId }: SuggestionModalProps
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              What&apos;s wrong / missing?
-            </label>
-            <div className="space-y-2">
-              {suggestionTypes.map((type) => (
-                <label key={type.value} className="flex items-center">
-                  <input
-                    type="radio"
-                    name="suggestion"
-                    value={type.value}
-                    checked={suggestionType === type.value}
-                    onChange={(e) => setSuggestionType(e.target.value as SuggestionType)}
-                    className="mr-2"
-                  />
-                  <span className="text-gray-700">{type.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
             <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-              Message
+              Tell us about the jam
             </label>
             <textarea
               id="message"
@@ -97,7 +68,7 @@ export function SuggestionModal({ isOpen, onClose, jamId }: SuggestionModalProps
               required
               rows={4}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Tell us what you know..."
+              placeholder={`Share details about the jam${city ? ` in ${city}` : ''}... (name, venue, schedule, etc.)`}
             />
           </div>
 
