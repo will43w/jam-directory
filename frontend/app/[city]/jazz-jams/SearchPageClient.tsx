@@ -16,6 +16,7 @@ interface SearchPageClientProps {
   filters: Pick<SearchFilters, 'tonight' | 'days' | 'after'>;
 }
 
+// Data displayed in the search page
 export function SearchPageClient({
   city,
   jams,

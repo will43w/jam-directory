@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getJamById } from '@/lib/services/jamService';
 import { JamDetailPageClient } from './JamDetailPageClient';
+import { AuthProvider } from '@/components/auth/AuthProvider';
 
 interface JamDetailPageProps {
   params: Promise<{ id: string }>;
@@ -22,11 +23,13 @@ export default async function JamDetailPage({ params }: JamDetailPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <JamDetailPageClient jam={jam} />
+    <AuthProvider>
+      <div className="min-h-screen bg-white">
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <JamDetailPageClient jam={jam} />
+        </div>
       </div>
-    </div>
+    </AuthProvider>
   );
 }
 

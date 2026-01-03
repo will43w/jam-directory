@@ -10,6 +10,7 @@ interface SearchPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
+// URL search parameter parsing and data fetching
 export default async function SearchPage({ params, searchParams }: SearchPageProps) {
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
@@ -17,7 +18,6 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
   filters.city = resolvedParams.city;
 
   // Fetch data
-  // TODO: Replace with actual Supabase implementation
   // For now, services will throw "Not implemented" errors, so we catch them
   let jams: Jam[] = [];
   const schedulesMap = new Map();

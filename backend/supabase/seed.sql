@@ -1,10 +1,30 @@
 -- Seed data for Jazz Jam Directory
 -- This file contains realistic example jams across different cities
 
--- Note: To add an admin user, you'll need to:
--- 1. Create a user via Supabase Auth (either through the dashboard or API)
--- 2. Insert their user_id into admin_users table:
---    INSERT INTO admin_users (user_id) VALUES ('<user-uuid-here>');
+-- ============================================================================
+-- ADMIN USER SETUP
+-- ============================================================================
+-- To create a test admin user for development:
+--
+-- 1. Start your local Supabase instance: supabase start
+-- 2. Create a user via Supabase Auth using the magic link flow:
+--    - Go to http://127.0.0.1:54323 (Supabase Studio)
+--    - Navigate to Authentication > Users
+--    - Click "Add user" and enter email: whafner43counts@gmail.com
+--    - Or use the magic link authentication flow in the app
+--
+-- 3. After the user is created, find their user_id (UUID) from the auth.users table
+--    or from the Supabase Studio interface
+--
+-- 4. Insert the user into admin_users table:
+--    INSERT INTO admin_users (user_id) 
+--    SELECT id FROM auth.users WHERE email = 'whafner43counts@gmail.com';
+--
+--    Or manually with the UUID:
+--    INSERT INTO admin_users (user_id) VALUES ('<user-uuid-from-auth-users>');
+--
+-- 5. Verify admin access by logging in with the magic link and clicking "Edit" on a jam page
+-- ============================================================================
 
 -- New York City Jams
 INSERT INTO jam (id, name, city, venue_name, venue_address, latitude, longitude, description, skill_level, image_url, canonical_source_url) VALUES
