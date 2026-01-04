@@ -36,16 +36,16 @@ export function FilterPanel() {
   const activeFilterCount = selectedSkillLevels.length;
 
   return (
-    <div className="bg-gray-50 rounded-lg">
+    <div className="border border-gray-200 rounded-md bg-white">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-gray-100 rounded-lg transition-colors"
+        className="w-full px-3 py-2 flex items-center justify-between text-left hover:bg-gray-50 rounded-md transition-colors"
       >
-        <span className="text-sm font-medium text-gray-700">
+        <span className="text-sm font-medium text-gray-800">
           Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
         </span>
         <svg
-          className={`w-5 h-5 text-gray-500 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 text-gray-500 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -55,7 +55,7 @@ export function FilterPanel() {
       </button>
       
       {isOpen && (
-        <div className="px-4 pb-4 pt-2 space-y-4">
+        <div className="px-3 pb-3 pt-2 space-y-3">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Filter by skill level
@@ -67,7 +67,7 @@ export function FilterPanel() {
                     type="checkbox"
                     checked={selectedSkillLevels.includes(skillLevel)}
                     onChange={() => handleSkillLevelToggle(skillLevel)}
-                    className="mr-2 w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    className="mr-2 w-4 h-4 text-blue-600 border-gray-300 rounded-sm focus:ring-blue-500"
                   />
                   <span className="text-sm text-gray-700">{skillLevel}</span>
                 </label>

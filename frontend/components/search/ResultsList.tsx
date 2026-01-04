@@ -12,15 +12,15 @@ export function ResultsList({
 }: ResultsListProps) {
   if (jams.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-600 text-lg">No jams found</p>
-        <p className="text-gray-500 text-sm mt-2">Try adjusting your search</p>
+      <div className="text-center py-8">
+        <p className="text-gray-800 text-sm font-medium">No jams found</p>
+        <p className="text-gray-600 text-xs mt-1">Try adjusting your search</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {jams.map((jam) => (
         <JamCard key={jam.id} jam={jam} />
       ))}

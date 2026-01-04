@@ -22,31 +22,31 @@ export function SearchPageClient({
   return (
     <>
       <div className="min-h-screen bg-white">
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="max-w-3xl mx-auto p-3 sm:p-4 space-y-2">
+          <div>
+              <h1 className="text-2xl font-semibold text-gray-900 mb-1">
               Jazz Jams in {city.charAt(0).toUpperCase() + city.slice(1)}
-            </h1>
-            <p className="text-gray-600">Find and discover jazz jam sessions near you</p>
+              </h1>
+              <p className="text-gray-600 text-sm">Find jazz jam sessions near you</p>
           </div>
 
-          <div className="space-y-4 mb-6">
-            <SearchBar />
+          <div>
+              <SearchBar />
           </div>
 
-          <div className="mb-4">
-            <Button
+          <div>
+              <Button
               onClick={() => setIsSuggestionModalOpen(true)}
               variant="secondary"
               className="w-full md:w-auto"
-            >
+              >
               Know a jam we&apos;re missing? Tell us!
-            </Button>
+              </Button>
           </div>
 
-          <ResultsList
-            jams={jams}
-          />
+          <div>
+              <ResultsList jams={jams} />
+          </div>
         </div>
       </div>
       <NewJamSuggestionModal

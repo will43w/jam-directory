@@ -88,7 +88,7 @@ export function JamDetail({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Hero Image */}
       {isEditMode ? (
         <div className="space-y-2">
@@ -99,11 +99,11 @@ export function JamDetail({
             type="url"
             value={localJam.image_url || ''}
             onChange={(e) => handleFieldChange('image_url', e.target.value || null)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
             placeholder="https://example.com/image.jpg"
           />
           {localJam.image_url && (
-            <div className="w-full h-64 md:h-96 bg-gray-200 rounded-lg overflow-hidden">
+            <div className="w-full h-56 md:h-80 bg-gray-200 rounded-md overflow-hidden border border-gray-200">
               <img
                 src={localJam.image_url}
                 alt={localJam.name}
@@ -114,7 +114,7 @@ export function JamDetail({
         </div>
       ) : (
         localJam.image_url && (
-          <div className="w-full h-64 md:h-96 bg-gray-200 rounded-lg overflow-hidden">
+          <div className="w-full h-56 md:h-80 bg-gray-200 rounded-md overflow-hidden border border-gray-200">
             <img
               src={localJam.image_url}
               alt={localJam.name}
@@ -133,10 +133,10 @@ export function JamDetail({
                 type="text"
                 value={localJam.name}
                 onChange={(e) => handleFieldChange('name', e.target.value)}
-                className="text-3xl font-bold text-gray-900 mb-2 w-full bg-transparent border-b-2 border-blue-500 focus:outline-none focus:border-blue-600"
+                className="text-2xl font-semibold text-gray-900 mb-1 w-full bg-transparent border-b border-blue-500 focus:outline-none focus:border-blue-600"
               />
             ) : (
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{localJam.name}</h1>
+              <h1 className="text-2xl font-semibold text-gray-900 mb-1">{localJam.name}</h1>
             )}
           </div>
           {!isEditMode && onEditClick && (
@@ -185,32 +185,32 @@ export function JamDetail({
               type="text"
               value={localJam.venue_name}
               onChange={(e) => handleFieldChange('venue_name', e.target.value)}
-              className="text-xl text-gray-700 mb-1 w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
+              className="text-base text-gray-800 mb-1 w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
               placeholder="Venue name"
             />
             <input
               type="text"
               value={localJam.venue_address || ''}
               onChange={(e) => handleFieldChange('venue_address', e.target.value)}
-              className="text-gray-600 mb-2 w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
+              className="text-sm text-gray-700 mb-2 w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
               placeholder="Venue address"
             />
             <input
               type="text"
               value={localJam.skill_level || ''}
               onChange={(e) => handleFieldChange('skill_level', e.target.value || null)}
-              className="text-sm text-gray-500 font-medium w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
+              className="text-xs text-gray-600 font-medium w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
               placeholder="Skill level (optional)"
             />
           </>
         ) : (
           <>
-            <p className="text-xl text-gray-700 mb-1">{localJam.venue_name}</p>
+            <p className="text-base text-gray-800 mb-1">{localJam.venue_name}</p>
             {localJam.venue_address && (
-              <p className="text-gray-600 mb-2">{localJam.venue_address}</p>
+              <p className="text-sm text-gray-700 mb-2">{localJam.venue_address}</p>
             )}
             {localJam.skill_level && (
-              <p className="text-sm text-gray-500 font-medium">
+              <p className="text-xs text-gray-600 font-medium">
                 Skill Level: {localJam.skill_level}
               </p>
             )}
@@ -220,24 +220,24 @@ export function JamDetail({
       
       {/* Description */}
       <div>
-        <h2 className="text-xl font-semibold mb-2">About</h2>
+        <h2 className="text-base font-semibold mb-1">About</h2>
         {isEditMode ? (
           <textarea
             value={localJam.description || ''}
             onChange={(e) => handleFieldChange('description', e.target.value || null)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px]"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 min-h-[96px] text-sm"
             placeholder="Description (optional)"
           />
         ) : (
           localJam.description && (
-            <p className="text-gray-700 whitespace-pre-wrap">{localJam.description}</p>
+            <p className="text-gray-800 whitespace-pre-wrap text-sm">{localJam.description}</p>
           )
         )}
       </div>
       
       {/* Schedule */}
       <div>
-        <h2 className="text-xl font-semibold mb-2">Schedule</h2>
+        <h2 className="text-base font-semibold mb-1">Schedule</h2>
         <ScheduleDisplay 
           schedule={localJam.schedule}
           isEditMode={isEditMode}
@@ -247,7 +247,7 @@ export function JamDetail({
       
       {/* Where To Get Updates */}
       <div>
-        <h2 className="text-xl font-semibold mb-2">Where To Get Updates</h2>
+        <h2 className="text-base font-semibold mb-1">Where To Get Updates</h2>
         <UpdateSourcesSection 
           updateSources={jam.update_sources || []} 
           isEditMode={isEditMode}
@@ -260,7 +260,7 @@ export function JamDetail({
       
       {/* Contact Info */}
       <div>
-        <h2 className="text-xl font-semibold mb-2">Contact Info</h2>
+        <h2 className="text-base font-semibold mb-1">Contact Info</h2>
         <ContactSection 
           contacts={jam.contacts || []} 
           isEditMode={isEditMode}
@@ -278,7 +278,7 @@ export function JamDetail({
             type="url"
             value={localJam.canonical_source_url || ''}
             onChange={(e) => handleFieldChange('canonical_source_url', e.target.value || null)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
             placeholder="Canonical source URL (optional)"
           />
         ) : (
@@ -287,7 +287,7 @@ export function JamDetail({
               href={localJam.canonical_source_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 hover:underline"
+              className="text-blue-700 hover:text-blue-900"
             >
               View original source →
             </a>
@@ -297,7 +297,7 @@ export function JamDetail({
       
       {/* Suggestion Button */}
       {!isEditMode && (
-        <div className="pt-4 border-t">
+        <div className="pt-3 border-t border-gray-200">
           <Button onClick={onSuggestionClick} variant="secondary" className="w-full md:w-auto">
             Got info? Suggest an edit
           </Button>

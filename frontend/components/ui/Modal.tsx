@@ -38,28 +38,28 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/65 backdrop-blur-[1px]"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby={title ? 'modal-title' : undefined}
     >
       <div
-        className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-md shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto border border-gray-200"
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
-          <div className="flex items-center justify-between p-4 border-b">
-            <h2 id="modal-title" className="text-xl font-semibold">
+          <div className="flex items-center justify-between p-3 border-b border-gray-200">
+            <h2 id="modal-title" className="text-base font-semibold">
               {title}
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-1"
+              className="text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded-sm p-1"
               aria-label="Close modal"
             >
               <svg
-                className="w-6 h-6"
+                className="w-5 h-5"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -72,7 +72,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
             </button>
           </div>
         )}
-        <div className="p-4">{children}</div>
+        <div className="p-3">{children}</div>
       </div>
     </div>
   );

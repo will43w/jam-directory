@@ -49,28 +49,28 @@ export function SearchBar() {
 
   return (
     <>
-      <div className="w-full space-y-3">
-        <div className="flex gap-3">
+      <div className="w-full space-y-2">
+        <div className="flex gap-2">
           <input
             type="text"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
-            placeholder="Search by name, venue, description, or keywords..."
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
+            placeholder="Search name, venue, keywords..."
+            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
           />
           <button
             onClick={handleNearMeClick}
-            className={`px-4 py-3 rounded-lg font-medium transition-colors whitespace-nowrap ${
+            className={`px-3 py-2 rounded-md font-medium transition-colors whitespace-nowrap text-sm ${
               hasLocation
                 ? 'bg-blue-600 text-white hover:bg-blue-700'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-300'
             }`}
             title={hasLocation ? 'Remove location filter' : 'Sort by proximity to your location'}
           >
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-4 w-4"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -88,7 +88,7 @@ export function SearchBar() {
           </button>
         </div>
         {hasLocation && (
-          <div className="text-sm text-blue-600 bg-blue-50 border border-blue-200 rounded-lg px-4 py-2">
+          <div className="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-md px-3 py-2">
             Results sorted by distance from your location
           </div>
         )}

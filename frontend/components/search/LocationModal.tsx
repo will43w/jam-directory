@@ -145,12 +145,12 @@ export function LocationModal({ isOpen, onClose, onLocationSelect }: LocationMod
                   setMode('current');
                   handleUseCurrentLocation();
                 }}
-                className="w-full justify-start"
+                className="w-full justify-start flex items-center gap-3"
                 variant="outline"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2"
+                  className="h-4 w-4 shrink-0"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -171,12 +171,12 @@ export function LocationModal({ isOpen, onClose, onLocationSelect }: LocationMod
               </Button>
               <Button
                 onClick={() => setMode('manual')}
-                className="w-full justify-start"
+                className="w-full justify-start flex items-center gap-3"
                 variant="outline"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2"
+                  className="h-4 w-4 shrink-0"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"

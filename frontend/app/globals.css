@@ -17,3 +17,23 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
+
+@layer base {
+  html {
+    font-size: 14px;
+  }
+
+  body {
+    @apply text-sm leading-5;
+  }
+
+  a {
+    @apply text-blue-700 hover:underline underline-offset-2;
+  }
+
+  code,
+  pre {
+    font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace;
+  }
+}
