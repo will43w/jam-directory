@@ -2,20 +2,19 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import type { JamWithRelations } from '@/lib/types';
+import type { Jam } from '@/lib/types';
 import { JamDetail } from '@/components/jam/JamDetail';
 import { JamDetailAdmin } from '@/components/jam/JamDetailAdmin';
 import { SuggestionModal } from '@/components/jam/SuggestionModal';
 import { AdminLoginModal } from '@/components/auth/AdminLoginModal';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { updateJam, deleteJam } from '@/lib/services/jamService';
-import { createSchedule, updateSchedule, deleteSchedule } from '@/lib/services/scheduleService';
-import { createOccurrence, updateOccurrence, deleteOccurrence } from '@/lib/services/occurrenceService';
+import { createUpdateSource, updateUpdateSource, deleteUpdateSource } from '@/lib/services/updateSourceService';
 import { createContact, updateContact, deleteContact } from '@/lib/services/contactService';
 import { useRouter } from 'next/navigation';
 
 interface JamDetailPageClientProps {
-  jam: JamWithRelations;
+  jam: Jam;
 }
 
 export function JamDetailPageClient({ jam }: JamDetailPageClientProps) {
@@ -77,33 +76,18 @@ export function JamDetailPageClient({ jam }: JamDetailPageClientProps) {
     router.push('/');
   };
 
-  const handleScheduleCreate = async (data: any) => {
-    await createSchedule(data);
+  const handleUpdateSourceCreate = async (data: any) => {
+    await createUpdateSource(data);
     router.refresh();
   };
 
-  const handleScheduleUpdate = async (id: string, data: any) => {
-    await updateSchedule(id, data);
+  const handleUpdateSourceUpdate = async (id: string, data: any) => {
+    await updateUpdateSource(id, data);
     router.refresh();
   };
 
-  const handleScheduleDelete = async (id: string) => {
-    await deleteSchedule(id);
-    router.refresh();
-  };
-
-  const handleOccurrenceCreate = async (data: any) => {
-    await createOccurrence(data);
-    router.refresh();
-  };
-
-  const handleOccurrenceUpdate = async (id: string, data: any) => {
-    await updateOccurrence(id, data);
-    router.refresh();
-  };
-
-  const handleOccurrenceDelete = async (id: string) => {
-    await deleteOccurrence(id);
+  const handleUpdateSourceDelete = async (id: string) => {
+    await deleteUpdateSource(id);
     router.refresh();
   };
 
@@ -128,12 +112,9 @@ export function JamDetailPageClient({ jam }: JamDetailPageClientProps) {
         <JamDetailAdmin
           jam={jam}
           onJamUpdate={handleJamUpdate}
-          onScheduleCreate={handleScheduleCreate}
-          onScheduleUpdate={handleScheduleUpdate}
-          onScheduleDelete={handleScheduleDelete}
-          onOccurrenceCreate={handleOccurrenceCreate}
-          onOccurrenceUpdate={handleOccurrenceUpdate}
-          onOccurrenceDelete={handleOccurrenceDelete}
+          onUpdateSourceCreate={handleUpdateSourceCreate}
+          onUpdateSourceUpdate={handleUpdateSourceUpdate}
+          onUpdateSourceDelete={handleUpdateSourceDelete}
           onContactCreate={handleContactCreate}
           onContactUpdate={handleContactUpdate}
           onContactDelete={handleContactDelete}

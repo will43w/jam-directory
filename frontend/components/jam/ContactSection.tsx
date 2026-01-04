@@ -13,7 +13,7 @@ interface ContactSectionProps {
   onContactDelete?: (id: string) => Promise<void>;
 }
 
-const CONTACT_TYPES: ContactType[] = ['email', 'instagram', 'facebook', 'website', 'other'];
+const CONTACT_TYPES: ContactType[] = ['email', 'phone', 'instagram_dm', 'facebook_dm', 'website_contact', 'other'];
 
 function formatContactLink(contact: JamContact): { href: string; label: string } | null {
   const value = contact.contact_value.trim();
@@ -21,18 +21,20 @@ function formatContactLink(contact: JamContact): { href: string; label: string }
   switch (contact.contact_type) {
     case 'email':
       return { href: `mailto:${value}`, label: value };
-    case 'website':
-      return { href: value.startsWith('http') ? value : `https://${value}`, label: value };
-    case 'instagram':
+    case 'phone':
+      return { href: `tel:${value}`, label: value };
+    case 'instagram_dm':
       return {
-        href: value.startsWith('@') ? `https://instagram.com/${value.slice(1)}` : `https://instagram.com/${value}`,
-        label: value.startsWith('@') ? value : `@${value}`,
+        href: value.startsWith('@') ? `https://instagram.com/${value.slice(1)}` : value.startsWith('http') ? value : `https://instagram.com/${value}`,
+        label: value.startsWith('@') ? value : value.startsWith('http') ? value : `@${value}`,
       };
-    case 'facebook':
+    case 'facebook_dm':
       return {
         href: value.startsWith('http') ? value : `https://facebook.com/${value}`,
         label: value,
       };
+    case 'website_contact':
+      return { href: value.startsWith('http') ? value : `https://${value}`, label: value };
     default:
       return { href: value, label: value };
   }
@@ -42,14 +44,16 @@ function getContactIcon(type: JamContact['contact_type']): string {
   switch (type) {
     case 'email':
       return '✉️';
-    case 'instagram':
+    case 'phone':
+      return '📞';
+    case 'instagram_dm':
       return '📷';
-    case 'facebook':
+    case 'facebook_dm':
       return '👥';
-    case 'website':
+    case 'website_contact':
       return '🌐';
     default:
-      return '📞';
+      return '📧';
   }
 }
 
@@ -116,115 +120,57 @@ export function ContactSection({
   if (!isEditMode) {
     if (contacts.length === 0) {
       return (
-        <div className="bg-gray-50 p-4 rounded-lg">
+        <div>
           <p className="text-gray-600">No contact information available</p>
         </div>
       );
     }
     
     return (
-      <div className="space-y-4">
-        {primaryContact && (
-          <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-            <p className="text-sm font-medium text-blue-900 mb-2">
-              Best place to confirm tonight&apos;s details:
-            </p>
-            <ContactItem contact={primaryContact} />
-          </div>
-        )}
-        
-        {otherContacts.length > 0 && (
-          <div className="space-y-2">
-            <h3 className="font-medium text-gray-900">Other contact methods:</h3>
-            {otherContacts.map((contact) => (
-              <ContactItem key={contact.id} contact={contact} />
-            ))}
-          </div>
-        )}
+      <div className="space-y-2">
+        {contacts.map((contact) => (
+          <ContactItem key={contact.id} contact={contact} />
+        ))}
       </div>
     );
   }
 
   return (
     <div className="space-y-4">
-      {primaryContact && (
-        <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-          <p className="text-sm font-medium text-blue-900 mb-2">
-            Best place to confirm tonight&apos;s details:
-          </p>
-          {editingId === primaryContact.id ? (
-            <ContactEditForm
-              formData={formData}
-              setFormData={setFormData}
-              onSubmit={handleSubmit}
-              onCancel={handleCancel}
-              isSubmitting={isSubmitting}
-            />
-          ) : (
-            <div className="flex items-center justify-between">
-              <ContactItem contact={primaryContact} />
-              <div className="flex gap-2">
+      {contacts.map((contact) => (
+        editingId === contact.id ? (
+          <ContactEditForm
+            key={contact.id}
+            formData={formData}
+            setFormData={setFormData}
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+            isSubmitting={isSubmitting}
+          />
+        ) : (
+          <div key={contact.id} className="p-3 border border-gray-200 rounded-lg flex items-center justify-between hover:bg-gray-50">
+            <ContactItem contact={contact} />
+            <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleEdit(contact)}
+              >
+                Edit
+              </Button>
+              {onContactDelete && (
                 <Button
-                  variant="ghost"
+                  variant="danger"
                   size="sm"
-                  onClick={() => handleEdit(primaryContact)}
+                  onClick={() => onContactDelete(contact.id)}
                 >
-                  Edit
+                  Delete
                 </Button>
-                {onContactDelete && (
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => onContactDelete(primaryContact.id)}
-                  >
-                    Delete
-                  </Button>
-                )}
-              </div>
+              )}
             </div>
-          )}
-        </div>
-      )}
-      
-      {otherContacts.length > 0 && (
-        <div className="space-y-2">
-          <h3 className="font-medium text-gray-900">Other contact methods:</h3>
-          {otherContacts.map((contact) => (
-            editingId === contact.id ? (
-              <ContactEditForm
-                key={contact.id}
-                formData={formData}
-                setFormData={setFormData}
-                onSubmit={handleSubmit}
-                onCancel={handleCancel}
-                isSubmitting={isSubmitting}
-              />
-            ) : (
-              <div key={contact.id} className="p-3 border border-gray-200 rounded-lg flex items-center justify-between hover:bg-gray-50">
-                <ContactItem contact={contact} />
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleEdit(contact)}
-                  >
-                    Edit
-                  </Button>
-                  {onContactDelete && (
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => onContactDelete(contact.id)}
-                    >
-                      Delete
-                    </Button>
-                  )}
-                </div>
-              </div>
-            )
-          ))}
-        </div>
-      )}
+          </div>
+        )
+      ))}
 
       {isAdding ? (
         <ContactEditForm
@@ -318,7 +264,7 @@ function ContactEditForm({
             value={formData.contact_value}
             onChange={(e) => setFormData({ ...formData, contact_value: e.target.value })}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="email@example.com"
+            placeholder="email@example.com or phone number"
           />
         </div>
       </div>

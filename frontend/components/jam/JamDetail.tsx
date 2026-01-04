@@ -1,25 +1,21 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { JamWithRelations, UpcomingDate, UpdateJamData } from '@/lib/types';
+import type { Jam, UpdateJamData } from '@/lib/types';
 import { ScheduleDisplay } from './ScheduleDisplay';
-import { UpcomingDates } from './UpcomingDates';
+import { UpdateSourcesSection } from './UpdateSourcesSection';
 import { ContactSection } from './ContactSection';
 import { Button } from '@/components/ui/Button';
-import { computeUpcomingDates } from '@/lib/utils/dateUtils';
 
 interface JamDetailProps {
-  jam: JamWithRelations;
+  jam: Jam;
   onSuggestionClick: () => void;
   onEditClick?: () => void;
   isEditMode?: boolean;
   onJamUpdate?: (id: string, data: UpdateJamData) => Promise<void>;
-  onScheduleCreate?: (data: any) => Promise<void>;
-  onScheduleUpdate?: (id: string, data: any) => Promise<void>;
-  onScheduleDelete?: (id: string) => Promise<void>;
-  onOccurrenceCreate?: (data: any) => Promise<void>;
-  onOccurrenceUpdate?: (id: string, data: any) => Promise<void>;
-  onOccurrenceDelete?: (id: string) => Promise<void>;
+  onUpdateSourceCreate?: (data: any) => Promise<void>;
+  onUpdateSourceUpdate?: (id: string, data: any) => Promise<void>;
+  onUpdateSourceDelete?: (id: string) => Promise<void>;
   onContactCreate?: (data: any) => Promise<void>;
   onContactUpdate?: (id: string, data: any) => Promise<void>;
   onContactDelete?: (id: string) => Promise<void>;
@@ -32,12 +28,9 @@ export function JamDetail({
   onEditClick,
   isEditMode = false,
   onJamUpdate,
-  onScheduleCreate,
-  onScheduleUpdate,
-  onScheduleDelete,
-  onOccurrenceCreate,
-  onOccurrenceUpdate,
-  onOccurrenceDelete,
+  onUpdateSourceCreate,
+  onUpdateSourceUpdate,
+  onUpdateSourceDelete,
   onContactCreate,
   onContactUpdate,
   onContactDelete,
@@ -50,8 +43,6 @@ export function JamDetail({
   useEffect(() => {
     setLocalJam(jam);
   }, [jam]);
-  
-  const upcomingDates = computeUpcomingDates(jam.schedules, jam.occurrences, 6);
 
   const handleFieldChange = (field: keyof typeof localJam, value: any) => {
     setLocalJam({ ...localJam, [field]: value });
@@ -72,6 +63,7 @@ export function JamDetail({
         skill_level: localJam.skill_level,
         image_url: localJam.image_url,
         canonical_source_url: localJam.canonical_source_url,
+        schedule: localJam.schedule,
       };
       await onJamUpdate(jam.id, updateData);
       if (onCancelEdit) {
@@ -80,6 +72,11 @@ export function JamDetail({
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleScheduleUpdate = async (schedule: string | null) => {
+    if (!onJamUpdate) return;
+    await onJamUpdate(jam.id, { schedule });
   };
 
   const handleCancel = () => {
@@ -242,26 +239,30 @@ export function JamDetail({
       <div>
         <h2 className="text-xl font-semibold mb-2">Schedule</h2>
         <ScheduleDisplay 
-          schedules={jam.schedules} 
+          schedule={localJam.schedule}
           isEditMode={isEditMode}
-          jamId={jam.id}
-          onScheduleCreate={onScheduleCreate}
-          onScheduleUpdate={onScheduleUpdate}
-          onScheduleDelete={onScheduleDelete}
+          onScheduleUpdate={handleScheduleUpdate}
         />
       </div>
       
-      {/* Upcoming Dates */}
+      {/* Where To Get Updates */}
       <div>
-        <h2 className="text-xl font-semibold mb-2">Upcoming Dates</h2>
-        <UpcomingDates dates={upcomingDates} />
+        <h2 className="text-xl font-semibold mb-2">Where To Get Updates</h2>
+        <UpdateSourcesSection 
+          updateSources={jam.update_sources || []} 
+          isEditMode={isEditMode}
+          jamId={jam.id}
+          onUpdateSourceCreate={onUpdateSourceCreate}
+          onUpdateSourceUpdate={onUpdateSourceUpdate}
+          onUpdateSourceDelete={onUpdateSourceDelete}
+        />
       </div>
       
-      {/* Contact */}
+      {/* Contact Info */}
       <div>
-        <h2 className="text-xl font-semibold mb-2">Contact</h2>
+        <h2 className="text-xl font-semibold mb-2">Contact Info</h2>
         <ContactSection 
-          contacts={jam.contacts} 
+          contacts={jam.contacts || []} 
           isEditMode={isEditMode}
           jamId={jam.id}
           onContactCreate={onContactCreate}

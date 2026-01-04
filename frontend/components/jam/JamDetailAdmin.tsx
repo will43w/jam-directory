@@ -2,20 +2,16 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { JamWithRelations, UpdateJamData, CreateScheduleData, UpdateScheduleData, CreateOccurrenceData, UpdateOccurrenceData, CreateContactData, UpdateContactData } from '@/lib/types';
+import type { Jam, UpdateJamData, CreateUpdateSourceData, UpdateUpdateSourceData, CreateContactData, UpdateContactData } from '@/lib/types';
 import { JamDetail } from './JamDetail';
-import { ExceptionCalendar } from '@/components/admin/ExceptionCalendar';
 import { Button } from '@/components/ui/Button';
 
 interface JamDetailAdminProps {
-  jam: JamWithRelations;
+  jam: Jam;
   onJamUpdate: (id: string, data: UpdateJamData) => Promise<void>;
-  onScheduleCreate: (data: CreateScheduleData) => Promise<void>;
-  onScheduleUpdate: (id: string, data: UpdateScheduleData) => Promise<void>;
-  onScheduleDelete: (id: string) => Promise<void>;
-  onOccurrenceCreate: (data: CreateOccurrenceData) => Promise<void>;
-  onOccurrenceUpdate: (id: string, data: UpdateOccurrenceData) => Promise<void>;
-  onOccurrenceDelete: (id: string) => Promise<void>;
+  onUpdateSourceCreate: (data: CreateUpdateSourceData) => Promise<void>;
+  onUpdateSourceUpdate: (id: string, data: UpdateUpdateSourceData) => Promise<void>;
+  onUpdateSourceDelete: (id: string) => Promise<void>;
   onContactCreate: (data: CreateContactData) => Promise<void>;
   onContactUpdate: (id: string, data: UpdateContactData) => Promise<void>;
   onContactDelete: (id: string) => Promise<void>;
@@ -26,12 +22,9 @@ interface JamDetailAdminProps {
 export function JamDetailAdmin({
   jam,
   onJamUpdate,
-  onScheduleCreate,
-  onScheduleUpdate,
-  onScheduleDelete,
-  onOccurrenceCreate,
-  onOccurrenceUpdate,
-  onOccurrenceDelete,
+  onUpdateSourceCreate,
+  onUpdateSourceUpdate,
+  onUpdateSourceDelete,
   onContactCreate,
   onContactUpdate,
   onContactDelete,
@@ -47,14 +40,6 @@ export function JamDetailAdmin({
     url.searchParams.delete('edit');
     window.history.pushState({}, '', url);
     router.refresh();
-  };
-
-  const handleOccurrenceSave = async (data: CreateOccurrenceData | UpdateOccurrenceData, id?: string) => {
-    if (id) {
-      await onOccurrenceUpdate(id, data as UpdateOccurrenceData);
-    } else {
-      await onOccurrenceCreate(data as CreateOccurrenceData);
-    }
   };
 
   const handleDelete = async () => {
@@ -76,29 +61,14 @@ export function JamDetailAdmin({
         onSuggestionClick={onSuggestionClick}
         isEditMode={true}
         onJamUpdate={onJamUpdate}
-        onScheduleCreate={onScheduleCreate}
-        onScheduleUpdate={onScheduleUpdate}
-        onScheduleDelete={onScheduleDelete}
-        onOccurrenceCreate={onOccurrenceCreate}
-        onOccurrenceUpdate={onOccurrenceUpdate}
-        onOccurrenceDelete={onOccurrenceDelete}
+        onUpdateSourceCreate={onUpdateSourceCreate}
+        onUpdateSourceUpdate={onUpdateSourceUpdate}
+        onUpdateSourceDelete={onUpdateSourceDelete}
         onContactCreate={onContactCreate}
         onContactUpdate={onContactUpdate}
         onContactDelete={onContactDelete}
         onCancelEdit={handleCancelEdit}
       />
-
-      {/* Exception Calendar - shown below in edit mode */}
-      <div className="pt-6 border-t">
-        <h2 className="text-xl font-semibold mb-4">Exception Calendar</h2>
-        <ExceptionCalendar
-          schedules={jam.schedules}
-          occurrences={jam.occurrences}
-          jamId={jam.id}
-          onSave={handleOccurrenceSave}
-          onDelete={onOccurrenceDelete}
-        />
-      </div>
 
       {/* Delete button - shown at bottom in edit mode */}
       <div className="pt-4 border-t flex justify-end">

@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
   const token = requestUrl.searchParams.get('token');
   const type = requestUrl.searchParams.get('type');
   const jamId = requestUrl.searchParams.get('jamId');
+  console.log('[Auth Callback] Received:', { token: !!token, type, jamId });
 
   // Only handle magic link callbacks
   if (type !== 'magiclink' || !token) {

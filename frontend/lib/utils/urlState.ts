@@ -1,5 +1,4 @@
 import type { SearchFilters } from '@/lib/types';
-import { INDEX_TO_WEEKDAY, WEEKDAY_TO_INDEX } from './constants';
 
 /**
  * Parse Next.js searchParams to SearchFilters object
@@ -17,29 +16,18 @@ export function parseSearchParams(
     filters.search = searchParams.search;
   }
   
-  if (searchParams.day) {
-    const dayValues = typeof searchParams.day === 'string' ? [searchParams.day] : searchParams.day;
-    const dayIndices = dayValues
-      .map(dayValue => WEEKDAY_TO_INDEX[dayValue.toLowerCase()])
-      .filter((dayIndex): dayIndex is number => dayIndex !== undefined);
-    if (dayIndices.length > 0) {
-      filters.days = dayIndices;
+  if (searchParams.latitude && typeof searchParams.latitude === 'string') {
+    const lat = parseFloat(searchParams.latitude);
+    if (!isNaN(lat)) {
+      filters.latitude = lat;
     }
   }
   
-  if (searchParams.after && typeof searchParams.after === 'string') {
-    filters.after = searchParams.after;
-  }
-  
-  if (searchParams.tonight) {
-    filters.tonight = searchParams.tonight === 'true' || searchParams.tonight === '1';
-  }
-  
-  if (searchParams.skill_level) {
-    const skillLevelValues = typeof searchParams.skill_level === 'string' 
-      ? [searchParams.skill_level] 
-      : searchParams.skill_level;
-    filters.skill_levels = skillLevelValues.filter((level): level is string => typeof level === 'string');
+  if (searchParams.longitude && typeof searchParams.longitude === 'string') {
+    const lng = parseFloat(searchParams.longitude);
+    if (!isNaN(lng)) {
+      filters.longitude = lng;
+    }
   }
   
   return filters;
@@ -59,27 +47,12 @@ export function serializeSearchParams(filters: SearchFilters): URLSearchParams {
     params.set('search', filters.search);
   }
   
-  if (filters.days && filters.days.length > 0) {
-    filters.days.forEach((dayIndex) => {
-      const weekdayName = INDEX_TO_WEEKDAY[dayIndex];
-      if (weekdayName) {
-        params.append('day', weekdayName);
-      }
-    });
+  if (filters.latitude !== undefined) {
+    params.set('latitude', filters.latitude.toString());
   }
   
-  if (filters.after) {
-    params.set('after', filters.after);
-  }
-  
-  if (filters.tonight) {
-    params.set('tonight', 'true');
-  }
-  
-  if (filters.skill_levels && filters.skill_levels.length > 0) {
-    filters.skill_levels.forEach((skillLevel) => {
-      params.append('skill_level', skillLevel);
-    });
+  if (filters.longitude !== undefined) {
+    params.set('longitude', filters.longitude.toString());
   }
   
   return params;

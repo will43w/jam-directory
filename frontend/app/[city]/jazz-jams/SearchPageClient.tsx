@@ -2,27 +2,20 @@
 
 import { useState } from 'react';
 import { SearchBar } from '@/components/search/SearchBar';
-import { FilterPanel } from '@/components/search/FilterPanel';
 import { ResultsList } from '@/components/search/ResultsList';
 import { NewJamSuggestionModal } from '@/components/jam/NewJamSuggestionModal';
 import { Button } from '@/components/ui/Button';
-import type { Jam, JamSchedule, JamOccurrence, SearchFilters } from '@/lib/types';
+import type { Jam } from '@/lib/types';
 
 interface SearchPageClientProps {
   city: string;
   jams: Jam[];
-  schedulesMap: Record<string, JamSchedule[]>;
-  occurrencesMap: Record<string, JamOccurrence[]>;
-  filters: Pick<SearchFilters, 'tonight' | 'days' | 'after'>;
 }
 
 // Data displayed in the search page
 export function SearchPageClient({
   city,
   jams,
-  schedulesMap,
-  occurrencesMap,
-  filters,
 }: SearchPageClientProps) {
   const [isSuggestionModalOpen, setIsSuggestionModalOpen] = useState(false);
 
@@ -39,7 +32,6 @@ export function SearchPageClient({
 
           <div className="space-y-4 mb-6">
             <SearchBar />
-            <FilterPanel />
           </div>
 
           <div className="mb-4">
@@ -54,9 +46,6 @@ export function SearchPageClient({
 
           <ResultsList
             jams={jams}
-            schedulesMap={schedulesMap}
-            occurrencesMap={occurrencesMap}
-            filters={filters}
           />
         </div>
       </div>
